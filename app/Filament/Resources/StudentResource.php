@@ -46,7 +46,7 @@ class StudentResource extends Resource
                 TextColumn::make('nisn')
                     ->label('NISN')
                     ->sortable(),
-                TextColumn::make('class.name')
+                TextColumn::make('classes.name')
                     ->label('Kelas')
                     ->sortable(),
                 TextColumn::make('date_of_birth')

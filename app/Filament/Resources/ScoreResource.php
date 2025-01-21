@@ -61,9 +61,11 @@ class ScoreResource extends Resource
             ->columns([
                 TextColumn::make('teacher.name')->label('Guru')->searchable(),
                 TextColumn::make('subject.name')->label('Mata Pelajaran')->searchable(),
-                TextColumn::make('class.name')->label('Kelas')->searchable(),
+                TextColumn::make('classes.name')->label('Kelas')->searchable(),
                 TextColumn::make('student.name')->label('Siswa')->searchable(),
                 TextColumn::make('score')->label('Nilai')->searchable(),
+                TextColumn::make('semester')->label('semester')->searchable(),
+                TextColumn::make('semester_year')->label('Tahun')->searchable(),
                 TextColumn::make('created_at')->label('Tanggal')->date()->searchable(),
             ])
             ->filters([
