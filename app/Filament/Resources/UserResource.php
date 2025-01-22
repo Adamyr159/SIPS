@@ -41,6 +41,9 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true),
+                TextInput::make('password')
+                    ->password()
+                    ->revealable(),
                 Select::make('status')
                     ->options([
                         'active' => 'Active',
@@ -48,10 +51,9 @@ class UserResource extends Resource
                         'non-active' => 'Non-Active',
                     ])
                     ->required(),
-                DatePicker::make('email_verified_at')
-                    ->label('Verified At'),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -62,7 +64,7 @@ class UserResource extends Resource
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('role')
                     ->label('Role')
-                    ->badge() 
+                    ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'siswa' => 'success',
                         'guru' => 'primary',

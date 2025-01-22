@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  
 class Teacher extends Model
 {
+    protected $fillable = ['id', 'name', 'nip', 'class_id', 'gender', 'date_of_birth'];
+
     public function classSubject(): BelongsTo
     {
         return $this->belongsTo(ClassSubject::class, 'class_id');

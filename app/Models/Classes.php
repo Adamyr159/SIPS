@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Classes extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['id', 'name'];
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);

@@ -12,11 +12,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Score extends Model
 {
     protected $fillable = [
+        'id',
         'teacher_id',
         'subject_id',
         'class_id',
         'student_id',
         'score',
+        'weight',
         'semester',
         'semester_year'
     ];

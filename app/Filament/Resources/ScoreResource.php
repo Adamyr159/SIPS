@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Classes;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Score;
@@ -42,15 +43,40 @@ class ScoreResource extends Resource
                     ->required(),
                 Select::make('class_id')
                     ->label('Kelas')
-                    ->options(ClassSubject::all()->pluck('name', 'id'))
+                    ->options(Classes::all()->pluck('name', 'id'))
                     ->required(),
                 Select::make('student_id')
                     ->label('Siswa')
                     ->options(Student::all()->pluck('name', 'id'))
                     ->required(),
+                Select::make('semester')
+                    ->label('Semester')
+                    ->options([
+                        1 => 'Semester 1',
+                        2 => 'Semester 2',
+                    ])
+                    ->required(),
+                TextInput::make('semester_year')
+                    ->label('Tahun Ajaran')
+                    ->numeric()
+                    ->minValue(2000)
+                    ->maxValue(9999)
+                    ->required(),
                 TextInput::make('score')
                     ->label('Nilai')
                     ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->required()
+                    ->reactive()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        // Hitung weight berdasarkan score yang dimasukkan
+                        $set('weight', self::calculateWeight($state));
+                    }),
+                TextInput::make('weight')
+                    ->label('Predikat')
+                    ->readonly()
                     ->required(),
             ]);
     }
@@ -64,9 +90,9 @@ class ScoreResource extends Resource
                 TextColumn::make('classes.name')->label('Kelas')->searchable(),
                 TextColumn::make('student.name')->label('Siswa')->searchable(),
                 TextColumn::make('score')->label('Nilai')->searchable(),
+                TextColumn::make('weight')->label('Predikat')->searchable(),
                 TextColumn::make('semester')->label('semester')->searchable(),
                 TextColumn::make('semester_year')->label('Tahun')->searchable(),
-                TextColumn::make('created_at')->label('Tanggal')->date()->searchable(),
             ])
             ->filters([
                 //
@@ -95,5 +121,31 @@ class ScoreResource extends Resource
             'create' => Pages\CreateScore::route('/create'),
             'edit' => Pages\EditScore::route('/{record}/edit'),
         ];
+    }
+
+    // Hook untuk menghitung dan menyimpan weight sebelum create
+    public static function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['weight'] = self::calculateWeight($data['score']);
+        return $data;
+    }
+
+    // Hook untuk menghitung dan menyimpan weight sebelum update/save
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['weight'] = self::calculateWeight($data['score']);
+        return $data;
+    }
+
+    private static function calculateWeight($score): string
+    {
+        if ($score >= 85 && $score <= 100) return 'A';
+        if ($score >= 76 && $score <= 84) return 'B';
+        if ($score >= 64 && $score <= 75) return 'C';
+        if ($score >= 50 && $score <= 63) return 'D';
+        if ($score >= 0 && $score <= 49) return 'E';
+
+        // Jika nilai di luar rentang 0-100
+        return 'nilai diluar rentang';
     }
 }
