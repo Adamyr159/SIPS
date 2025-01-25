@@ -41,9 +41,9 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true),
-                TextInput::make('password')
-                    ->password()
-                    ->revealable(),
+                // TextInput::make('password')
+                //     ->password()
+                //     ->revealable(),
                 Select::make('status')
                     ->options([
                         'active' => 'Active',

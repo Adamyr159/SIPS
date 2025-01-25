@@ -6,11 +6,14 @@ use App\Models\Classes;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Score extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'id',
         'teacher_id',

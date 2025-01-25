@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Classes;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Score;
+use App\Models\Classes;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ScoreResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -121,20 +122,6 @@ class ScoreResource extends Resource
             'create' => Pages\CreateScore::route('/create'),
             'edit' => Pages\EditScore::route('/{record}/edit'),
         ];
-    }
-
-    // Hook untuk menghitung dan menyimpan weight sebelum create
-    public static function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['weight'] = self::calculateWeight($data['score']);
-        return $data;
-    }
-
-    // Hook untuk menghitung dan menyimpan weight sebelum update/save
-    public static function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['weight'] = self::calculateWeight($data['score']);
-        return $data;
     }
 
     private static function calculateWeight($score): string
