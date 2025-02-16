@@ -13,6 +13,7 @@ class ListScores extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\ButtonAction::make()->url(fn()=> route('download-nilai-siswa')),
             Actions\CreateAction::make(),
         ];
     }
